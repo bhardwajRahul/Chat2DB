@@ -35,7 +35,7 @@ public class CacheManage {
     static {
         try {
             init();
-        } catch (Exception e) {
+        } catch (Exception | LinkageError e) {
             log.error("init error", e);
         }
     }
@@ -126,6 +126,9 @@ public class CacheManage {
     }
 
     public static void fuzzyDelete(String key) {
+        if (!init) {
+            return;
+        }
         Cache<String, String> myCache = cacheManager.getCache(CACHE, String.class, String.class);
         try {
             Set<String> removes = new HashSet<>();
